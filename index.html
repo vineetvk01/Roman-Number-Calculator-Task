@@ -1,0 +1,186 @@
+<html>
+  <head>
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script>
+    function summation(num1,num2){
+      console.log("sum");
+      return num1+num2;
+    }
+
+    function subtraction(num1,num2){
+      console.log("sub");
+      if(num1>num2){
+        return num1-num2;
+      }else{
+        return num2-num1;
+      }
+    }
+
+    function multipli(num1,num2){
+      console.log("mul");
+      return num1*num2;
+    }
+
+    function division(num1,num2){
+      console.log("div");
+      //Removing the after decimal number
+      return Math.floor(num1/num2);
+    }
+
+    // function for converting char to int
+    function ch_int(c){
+        switch (c){
+        case 'I': return 1;
+        case 'V': return 5;
+        case 'X': return 10;
+        case 'L': return 50;
+        case 'C': return 100;
+        case 'D': return 500;
+        case 'M': return 1000;
+        default: return -1;
+        }
+      }
+
+    //This function is for converting the romans to numbers
+    function numberise (rom){
+          var roman = rom;
+            if(roman == null) return -1;
+          var num = ch_int(roman.charAt(0));
+          var pre, curr;
+
+          for(var i = 1; i < roman.length; i++){
+          curr = ch_int(roman.charAt(i));
+          pre = ch_int(roman.charAt(i-1));
+          if(curr <= pre){
+            num += curr;
+            } else {
+            num = num - pre*2 + curr;
+            }
+          }
+          return num;
+        }
+      //This function is for converting the numbers to romans
+      function romanise(num) {
+        if (typeof num !== 'number')
+          return false;
+
+          var digits = String(+num).split(""),
+          key = ["","C","CC","CCC","CD","D","DC","DCC","DCCC","CM",
+          "","X","XX","XXX","XL","L","LX","LXX","LXXX","XC",
+          "","I","II","III","IV","V","VI","VII","VIII","IX"],
+          roman_num = "",
+          i = 3;
+          while (i--)
+          roman_num = (key[+digits.pop() + (i * 10)] || "") + roman_num;
+          return Array(+digits.join("") + 1).join("M") + roman_num;
+        }
+
+    // This is the main function
+    function dothemaths(){
+    console.clear();
+    document.getElementById('console1').innerHTML = "";
+
+    var input_1 = document.getElementsByName('first')[0].value;
+    var input_2 = document.getElementsByName('second')[0].value;
+
+    //GET THE NUMBERS
+    num_1 = numberise(input_1);
+    num_2 = numberise(input_2);
+
+    //validation
+    if(num_1 == -1){
+      document.getElementById('console1').innerHTML += "<br><p style='color:red'>>>Error in First number.</p>";
+      return false;
+    }
+    if(num_2 == -1){
+      document.getElementById('console1').innerHTML += "<br><p style='color:red'>>>Error in Second number.</p>";
+      return false;
+    }
+
+    console.log("First Number : "+ num_1);
+    console.log("Second Number : "+ num_2);
+    //GET THE OPERATION
+    var elements = document.getElementsByName('operation');
+    for (var i = 0, l = elements.length; i < l; i++)
+    {
+        if (elements[i].checked)
+        {
+            oper =  elements[i].value;
+        }
+    }
+
+    //Switch between the proper operation
+    switch (oper) {
+      case oper = "1": oper_ = "Summation";
+                       ans = summation(num_1,num_2);
+                       break;
+      case oper = "2": oper_ = "Subtraction";
+                       ans = subtraction(num_1,num_2);
+                       break;
+      case oper = "3": oper_ = "Multiplication";
+                       ans = multipli(num_1,num_2);
+                       break;
+      case oper = "4": oper_ = "Division";
+                       ans = division(num_1,num_2);
+                       break;
+      default: oper_ = "Error"; ans = 'error';
+
+    }
+    console.log(oper_);
+    document.getElementsByName('answer')[0].value = romanise(ans);
+    //alert(input_1);
+}
+
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h3 id="title">Innoventes Technologies - JavaScript Task</h3>
+        <h5>By Vineet Srivastav</h5>
+      </div>
+      <div class="content">
+        <div class="first-half">
+            <input type="text" class="input" placeholder="Enter First Number" name="first" disabled>
+            <ul class="operations">
+              <li><label><input type="radio" name="operation" value="1" checked><span>+</span></label></li>
+              <li><label><input type="radio" name="operation" value="2"><span>-</span></label></li>
+              <li><label><input type="radio" name="operation" value="3"><span>X</span></label></li>
+              <li><label><input type="radio" name="operation" value="4"><span>/</span></label></li>
+            </ul>
+            <input type="text" class="input" placeholder="Enter Second Number" name="second" disabled>
+            <h5>-ANSWER-</h5>
+            <input type="text" id="answer" name="answer" value="" disabled>
+            <button onclick="dothemaths();"> - CALCULATE -</button>
+        </div>
+        <div class="second-half">
+          <h5 style="text-align:center;">CONSOLE:</h5>
+          <p id="console"><button onclick="startprogram();">Start the Program!</button></p>
+          <p id="console1"></p>
+        </div>
+      </div>
+      <div class="footer">
+      </div>
+    </div>
+    <script>
+
+    var disp = document.getElementById('console');
+    function f2(){
+      disp.innerHTML += "<br>>> Enter two roman numbers and perform the operation...";
+      document.getElementsByName('first')[0].disabled = false;
+      document.getElementsByName('second')[0].disabled = false;
+      }
+    function f1(){
+      disp.innerHTML += "<br>>> I am a roman number calculator";
+
+      setTimeout(f2, 1000);
+    }
+    function startprogram(){
+      disp.innerHTML = ">> Hey! User...";
+      setTimeout(f1, 1000);
+    }
+
+    </script>
+  </body>
+</html>
